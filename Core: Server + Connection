@@ -1,0 +1,26 @@
+#pragma once
+#include <boost/beast.hpp>
+#include <boost/asio.hpp>
+#include "../config/Config.h"
+
+namespace beast = boost::beast;
+namespace http = beast::http;
+namespace net = boost::asio;
+
+class Connection : public std::enable_shared_from_this<Connection> {
+public:
+    Connection(net::io_context& ioc, Config& cfg);
+    void start();
+
+private:
+    void doAccept();
+    void doRead();
+    void doProxy(const http::request<http::string_body>& req);
+    void doWriteResponse(http::response<http::string_body> res);
+
+    net::io_context& ioc_;
+    Config& config_;
+    beast::tcp_stream stream_;           // hoặc ssl::stream cho HTTPS
+    beast::flat_buffer buffer_;
+    // ...
+};

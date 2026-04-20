@@ -1,0 +1,38 @@
+#pragma once
+#include <string>
+#include <vector>
+#include <memory>
+
+struct Backend {
+    std::string host;
+    int port = 80;
+    int weight = 1;
+    bool healthy = true;
+    size_t active_connections = 0;   // cho LeastConnections
+};
+
+struct Route {
+    std::string path_prefix;
+    std::vector<Backend> backends;
+    std::string strategy;
+    int timeout_ms = 10000;
+    int max_retries = 1;
+};
+
+struct SSLConfig {
+    bool enabled = false;
+    std::string cert_file;
+    std::string key_file;
+};
+
+class Config {
+public:
+    std::string listen_address = "0.0.0.0";
+    int listen_port = 8080;
+    SSLConfig ssl;
+    std::vector<Route> routes;
+    bool health_check_enabled = true;
+    int health_interval = 15;
+
+    bool load(const std::string& path);
+};

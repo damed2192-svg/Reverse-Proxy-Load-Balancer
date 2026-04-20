@@ -1,7 +1,7 @@
-# 🚀 VPS Reverse Proxy + Load Balancer
+# 🚀 VPS Reverse Proxy + Load Balancer (C++)
 
-A lightweight reverse proxy and load balancer written in Go.
-This project is designed to simulate core features of tools like NGINX and Traefik in a simple and educational way.
+A lightweight reverse proxy and load balancer written in C++.
+This project demonstrates how core networking components like reverse proxy, request routing, and load balancing work at a low level.
 
 ---
 
@@ -13,9 +13,9 @@ This project is designed to simulate core features of tools like NGINX and Traef
   * Round Robin
   * Random
   * Single backend
-* Health check (auto remove dead servers)
-* Configurable via YAML
-* Docker support
+* Health check for backend servers
+* Configurable via YAML/JSON
+* High-performance using C++ networking
 
 ---
 
@@ -31,14 +31,35 @@ Client → Proxy Server → Load Balancer → Backend Servers
 
 ```
 vps-reverse-proxy/
-├── cmd/server            # Entry point
-├── internal/
-│   ├── proxy/            # Core proxy logic
-│   ├── config/           # Config loader
-│   ├── server/           # HTTP server
-│   └── utils/            # Helpers
-├── configs/              # YAML configs
-├── scripts/              # Run scripts
+├── src/
+│   ├── main.cpp              # Entry point
+│   │
+│   ├── proxy/
+│   │   ├── Proxy.cpp
+│   │   ├── Proxy.h
+│   │
+│   ├── load_balancer/
+│   │   ├── LoadBalancer.cpp
+│   │   ├── LoadBalancer.h
+│   │
+│   ├── health/
+│   │   ├── HealthCheck.cpp
+│   │   ├── HealthCheck.h
+│   │
+│   ├── config/
+│   │   ├── Config.cpp
+│   │   ├── Config.h
+│   │
+│   └── utils/
+│       ├── Logger.cpp
+│       ├── Logger.h
+│
+├── configs/
+│   └── config.yaml
+│
+├── CMakeLists.txt
+├── Dockerfile
+└── README.md
 ```
 
 ---
@@ -61,7 +82,7 @@ routes:
 
 ---
 
-## ▶️ Run Locally
+## ▶️ Build & Run
 
 ### 1. Clone repo
 
@@ -70,10 +91,19 @@ git clone https://github.com/yourusername/vps-reverse-proxy.git
 cd vps-reverse-proxy
 ```
 
-### 2. Run
+### 2. Build with CMake
 
 ```bash
-go run cmd/server/main.go
+mkdir build
+cd build
+cmake ..
+make
+```
+
+### 3. Run
+
+```bash
+./proxy_server
 ```
 
 ---
@@ -99,25 +129,27 @@ docker run -p 8080:8080 vps-proxy
 
 ## 📊 Example Use Case
 
-* Multiple backend services running on different ports
-* Route traffic by domain
-* Distribute load automatically
+* Route traffic to multiple backend services
+* Balance load across servers
+* Simulate basic NGINX-like behavior
 
 ---
 
 ## 🔮 Future Improvements
 
-* HTTPS support (Let's Encrypt)
+* HTTPS support (OpenSSL)
+* Epoll / async I/O optimization
 * Web dashboard
 * Rate limiting
-* Authentication
 * Metrics (Prometheus)
 
 ---
 
 ## 🧑‍💻 Tech Stack
 
-* Go (Golang)
+* C++
+* POSIX sockets / networking
+* CMake
 * Docker
 
 ---
@@ -125,3 +157,5 @@ docker run -p 8080:8080 vps-proxy
 ## 📄 License
 
 MIT License
+
+

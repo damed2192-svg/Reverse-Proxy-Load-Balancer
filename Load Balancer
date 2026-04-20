@@ -1,0 +1,12 @@
+// load_balancer/LoadBalancer.h
+#pragma once
+#include "../config/Config.h"
+#include <memory>
+
+class LoadBalancer {
+public:
+    virtual ~LoadBalancer() = default;
+    virtual Backend* getNext(Route& route) = 0;   // trả pointer để có thể update active_connections
+};
+
+std::unique_ptr<LoadBalancer> createLoadBalancer(const std::string& type);

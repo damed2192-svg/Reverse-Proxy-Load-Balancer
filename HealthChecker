@@ -1,0 +1,1 @@
+Sử dụng boost::asio::steady_timer để check định kỳ. Mỗi backend gửi HTTP GET /health (hoặc chỉ TCP connect nếu muốn nhẹ).
